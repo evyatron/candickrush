@@ -14,6 +14,21 @@ var App = (function() {
           'name': 'Second Level',
           'image': 'images/levels/3.png',
           'start': [0, 125]
+        },
+        {
+          'name': 'Decisions',
+          'image': 'images/levels/4.png',
+          'start': [0, 275]
+        },
+        {
+          'name': 'Oh you can do that?',
+          'image': 'images/levels/5.png',
+          'start': [0, 550]
+        },
+        {
+          'name': 'Wait, What?',
+          'image': 'images/levels/6.png',
+          'start': [0, 305]
         }
       ];
 
