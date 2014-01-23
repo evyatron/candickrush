@@ -1,33 +1,45 @@
 var App = (function() {
   var LEVELS = [
         {
+          'id': 'beginners',
           'name': 'Beginners',
-          'image': 'images/levels/1.png',
+          'image': 'images/levels/beginners.png',
           'start': [0, 150]
         },
         {
-          'name': 'First Level',
-          'image': 'images/levels/2.png',
-          'start': [0, 430]
+          'id': 'easypeasy',
+          'name': 'Easy Peasy',
+          'image': 'images/levels/easypeasy.png',
+          'start': [0, 290]
         },
         {
-          'name': 'Second Level',
-          'image': 'images/levels/3.png',
+          'id': 'isiteasy',
+          'name': 'Is It Easy?',
+          'image': 'images/levels/isiteasy.png',
           'start': [0, 125]
         },
         {
-          'name': 'Decisions',
-          'image': 'images/levels/4.png',
-          'start': [0, 275]
+          'id': 'intermediate',
+          'name': 'Intermediate',
+          'image': 'images/levels/inter.png',
+          'start': [0, 430]
         },
         {
+          'id': 'intermediate',
+          'name': 'Decisions, Decisions',
+          'image': 'images/levels/decisions.png',
+          'start': [0, 280]
+        },
+        {
+          'id': 'curveball',
           'name': 'Oh you can do that?',
-          'image': 'images/levels/5.png',
+          'image': 'images/levels/curveball.png',
           'start': [0, 550]
         },
         {
+          'id': 'waitwhat',
           'name': 'Wait, What?',
-          'image': 'images/levels/6.png',
+          'image': 'images/levels/what.png',
           'start': [0, 305]
         }
       ];

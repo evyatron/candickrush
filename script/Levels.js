@@ -1,7 +1,7 @@
 var Levels = (function() {
   var el,
       onLevelSelect,
-      levels = [];
+      levels = {};
 
   function init(options) {
     el = options.el;
@@ -18,19 +18,18 @@ var Levels = (function() {
     }
 
     for (var i = 0, level; level = levels[i++];) {
-      level.level = i;
-      addLevel(level, status[i]);
+      addLevel(level, status[level.id]);
     }
   }
 
   function addLevel(level, status) {
-    levels.push(level);
+    levels[level.id] = level;
 
     var elLevel = document.createElement('li');
 
     elLevel.className = 'playing-0';
 
-    elLevel.dataset.level = levels.length;
+    elLevel.dataset.level = level.id;
     elLevel.innerHTML = '<h3>' + level.name + '</h3>' +
                         '<span class="image" style="background-image: url(' + level.image + ');"></span>' +
                         '<div class="status">Record: <span class="record"></span></div>' +
@@ -40,7 +39,7 @@ var Levels = (function() {
 
     el.appendChild(elLevel);
 
-    addLevelStatus(elLevel.dataset.level, status);
+    addLevelStatus(level, status);
   }
 
   function addLevelStatus(level, status) {
@@ -65,8 +64,8 @@ var Levels = (function() {
     }
   }
 
-  function setPlaying(levelNumber, players) {
-    var elLevel = getLevelElement(levelNumber),
+  function setPlaying(level, players) {
+    var elLevel = getLevelElement(level),
         numberOfPlayers = Object.keys(players || {}).length;
 
     elLevel.className = elLevel.className.replace(/playing-\d+/, '');
@@ -74,15 +73,18 @@ var Levels = (function() {
     (elLevel.querySelector('.playing-num') || {}).innerHTML = numberOfPlayers;
   }
 
-  function getLevelElement(levelNumber) {
-    return elLevel = el.querySelector('li[data-level = "' + levelNumber + '"]');
+  function getLevelElement(level) {
+    if (typeof level === 'object') {
+      level = level.id;
+    }
+    return elLevel = el.querySelector('li[data-level = "' + level + '"]');
   }
 
   function onLevelClick(e) {
     var elLevel = e.target,
-        index = elLevel.dataset.level - 1;
+        id = elLevel.dataset.level;
 
-    onLevelSelect(levels[index], index);
+    onLevelSelect(levels[id]);
   }
 
   return {

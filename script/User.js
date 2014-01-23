@@ -46,14 +46,12 @@ var User = (function() {
   }
 
   function startPlaying(level) {
-    var levelNumber = level.level;
-
     DB.User.update({
       'id': id,
-      'playing': levelNumber
+      'playing': level.id
     });
 
-    refPlaying = DB.set('playing/' + levelNumber + '/' + id, {
+    refPlaying = DB.set('playing/' + level.id + '/' + id, {
       'start': (new Date()).toString(),
       'user': getInfo(),
       'removeOnDisconnect': true
@@ -64,17 +62,19 @@ var User = (function() {
     refPlaying && refPlaying.remove();
 
     DB.remove('users/' + id + '/playing');
+    DB.remove('online/' + id + '/playing');
 
     if (!info) {
       return;
     }
 
-    var levelNumber = info.level.level;
+    var level = info.level,
+        levelId = level.id;
 
     info.didWin = !!didWin;
 
     // add a "map" of levels' statuses, for UI
-    DB.get('users/' + id + '/levels/' + levelNumber, function(data) {
+    DB.get('users/' + id + '/levels/' + levelId, function(data) {
       data = data && data.val();
 
       if (
@@ -88,9 +88,9 @@ var User = (function() {
           'duration': info.duration
         };
 
-        DB.set('users/' + id + '/levels/' + levelNumber, data);
+        DB.set('users/' + id + '/levels/' + levelId, data);
 
-        onLevelCompleted(levelNumber, data);
+        onLevelCompleted(levelId, data);
       }
     })
 
@@ -103,7 +103,7 @@ var User = (function() {
       // add game to user's games
       DB.set('games/' + gameId, info);
       DB.set('games-by-user/' + id + '/' + gameId, true);
-      DB.set('games-by-level/' + levelNumber + '/' + gameId, true);
+      DB.set('games-by-level/' + level.id + '/' + gameId, true);
     })
   }
 
@@ -116,8 +116,14 @@ var User = (function() {
     };
   }
 
-  function getLevelStatus(levelNumber) {
-    return levelNumber? (levels || {})[levelNumber] : (levels || {});
+  function getLevelStatus(levelId) {
+    if (levelId && typeof levelId === 'object') {
+      levelId = levelId.id;
+    }
+
+    !levels && (levels = {});
+
+    return levelId? levels[levelId] : levels;
   }
 
   function getLocation() {
