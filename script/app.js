@@ -21,6 +21,9 @@ var App = (function() {
   function init() {
     firebase = new Firebase('https://candickrun.firebaseio.com');
 
+    document.getElementById('info-trigger').addEventListener('click', toggleInfo);
+    document.getElementById('info-close').addEventListener('click', toggleInfo);
+
     User.init({
       'firebase': firebase,
       'el': document.getElementById('player'),
@@ -48,8 +51,9 @@ var App = (function() {
       'onSelect': onLevelSelect
     });
 
-    document.getElementById('info-trigger').addEventListener('click', toggleInfo);
     window.addEventListener('keyup', onKeyUp);
+
+    document.body.classList.add('ready');
   }
 
   function toggleInfo() {

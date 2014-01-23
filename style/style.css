@@ -24,13 +24,65 @@ a:hover {
   overflow: hidden;
 }
 
+#loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  line-height: 200px;
+  background: rgba(0, 0, 0, .6);
+  color: #fff;
+  text-align: center;
+  font-weight: 300;
+  font-size: 42px;
+  z-index: 800;
+  margin: -100px 0 0 -100px;
+  pointer-events: none;
+  border-radius: 50%;
+}
+.ready #loading {
+  display: none;
+}
+  #loading:before,
+  #loading:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: inherit
+  }
+  #loading:before {
+    margin: 5px;
+    border-left: 10px solid rgba(0, 0, 0, .6);
+    -webkit-animation: spin-cw 800ms ease-in-out alternate infinite;
+  }
+  #loading:after {
+    margin: 10px;
+    border-right: 10px solid rgba(0, 0, 0, .6);
+    -webkit-animation: spin-cw 700ms ease-in-out alternate infinite;
+  }
+  @-webkit-keyframes spin-cw {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
 h1 {
   height: 60px;
   line-height: 60px;
-  font-size: 33px;
-  font-weight: 300;
+  font-size: 44px;
+  font-weight: 400;
+  text-shadow: 2px 2px 0px #769a78;
   text-align: center;
   background: linear-gradient(to bottom, rgba(0, 0, 0, .1), rgba(0, 0, 0, 0));
+  /* fix ugly font-rendering in chrome */
+  -webkit-text-stroke: 0.4px;
 }
   h1:after {
     content: "";
@@ -305,6 +357,9 @@ h1 {
   opacity: 0;
   -webkit-transition: all 200ms ease-in;
   transition: all 200ms ease-in;
+
+  /* hide player's UI for now, until I actually do something with it */
+  display: none;
 }
 .player-ready #player {
   opacity: 1;
@@ -458,16 +513,16 @@ h1 {
   line-height: 80px;
   text-align: center;
   border-radius: 50%;
-  background: rgba(0, 0, 0, .3);
-  box-shadow: 0 0 0 0 rgba(0, 0, 0, .3) inset;
+  background: #b4a18c;
+  box-shadow: 0 0 0 0 rgba(47, 153, 54, .3) inset;
   cursor: pointer;
   z-index: 700;
   -webkit-transition: all 150ms ease-in-out;
   transition: all 150ms ease-in-out;
 }
 #info-trigger:hover{
-  box-shadow: 0 0 0 8px rgba(0, 0, 0, .3) inset;
-  background: rgba(0, 0, 0, .25);
+  box-shadow: 0 0 0 8px rgba(47, 153, 54, .3) inset;
+  background: #9b8267;
 }
 #info-screen {
   position: absolute;
@@ -479,16 +534,16 @@ h1 {
   z-index: 600;
   opacity: 0;
   pointer-events: none;
-  -webkit-transition: all 260ms ease-in-out;
-  transition: all 260ms ease-in-out;
+  -webkit-transition: all 320ms ease-in-out;
+  transition: all 320ms ease-in-out;
 }
 #info {
   position: absolute;
   top: 50%;
   left: 50%;
   width: 500px;
-  height: 340px;
-  padding: 20px;
+  height: 370px;
+  padding: 10px 20px;
   margin: -190px 0 0 -270px;
   font-size: 16px;
   text-align: left;
@@ -513,7 +568,23 @@ h1 {
   #info ul {
     margin-left: 20px;
   }
-
+  #info-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 32px;
+    height: 32px;
+    margin: -16px -16px 0 0;
+    cursor: pointer;
+    background: transparent url(../images/close.png) 50% 50% no-repeat;
+    background-size: cover;
+    -webkit-transition: all 100ms ease-out;
+    transition: all 100ms ease-out;
+  }
+  #info-close:hover {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
 .info #info {
   opacity: 1;
   pointer-events: inherit;
