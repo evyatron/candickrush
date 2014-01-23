@@ -25,7 +25,7 @@ var App = (function() {
           'start': [0, 430]
         },
         {
-          'id': 'intermediate',
+          'id': 'decisions',
           'name': 'Decisions, Decisions',
           'image': 'images/levels/decisions.png',
           'start': [0, 280]
