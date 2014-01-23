@@ -201,6 +201,7 @@ h1 {
 .game-lose #game:after {
   opacity: 1;
 }
+.game-win #game canvas,
 .game-lose #game canvas {
   -webkit-transition: opacity 1500ms ease-out;
   transition: opacity 1500ms ease-out;
