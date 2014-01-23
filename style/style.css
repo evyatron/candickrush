@@ -260,13 +260,32 @@ h1 {
     width: 90px;
     height: 90px;
     margin: -45px 5px 0 0;
-    pointer-events: inherit;
-    background: transparent url(../images/start.png) 50% 50% no-repeat;
-    background-size: cover;
+    pointer-events: none;
+  }
+  #game .start:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     -webkit-transition: all 300ms ease-in-out;
     transition: all 300ms ease-in-out;
     -webkit-animation: start 600ms alternate infinite ease-out;
     animation: start 600ms alternate infinite ease-out;
+    background: transparent url(../images/start.png) 50% 50% no-repeat;
+    background-size: cover;
+  }
+  #game .start:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 0;
+    height: 36px;
+    width: 42px;
+    margin-top: -18px;
+    background: rgba(255,0,0,.2);
+    pointer-events: auto;
   }
   .game-running #game .start,
   .game-win #game .start,

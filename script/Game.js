@@ -142,7 +142,7 @@ var Game = (function() {
   }
 
   function mouseOnStart() {
-    window.setTimeout(start, 250);
+    window.setTimeout(start, 150);
   }
 
   function stop() {
