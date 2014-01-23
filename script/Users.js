@@ -1,3 +1,4 @@
+// will be used to display online users and their "movements" between games
 var Users = (function(){
   var el
 
@@ -13,16 +14,17 @@ var Users = (function(){
   }
 
   function onPlayerAdded(snapshot) {
-    console.log('new player', snapshot.val());
+    
   }
 
   function onPlayerChanged(snapshot) {
-    console.log('player changed', snapshot.val());
+    
   }
 
   function onPlayerRemoved(snapshot) {
-    console.log('player removed', snapshot.val());
+    
   }
+
   return {
     'init': init
   };
