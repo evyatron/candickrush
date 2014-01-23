@@ -4,43 +4,50 @@ var App = (function() {
           'id': 'beginners',
           'name': 'Beginners',
           'image': 'images/levels/beginners.png',
-          'start': [0, 150]
+          'start': [0, 150],
+          'end': [null, 414]
         },
         {
           'id': 'easypeasy',
           'name': 'Easy Peasy',
           'image': 'images/levels/easypeasy.png',
-          'start': [0, 290]
+          'start': [0, 290],
+          'end': [null, 397]
         },
         {
           'id': 'isiteasy',
           'name': 'Is It Easy?',
           'image': 'images/levels/isiteasy.png',
-          'start': [0, 125]
+          'start': [0, 125],
+          'end': [null, 113]
         },
         {
           'id': 'intermediate',
           'name': 'Intermediate',
           'image': 'images/levels/inter.png',
-          'start': [0, 430]
+          'start': [0, 430],
+          'end': [null, 235]
         },
         {
           'id': 'decisions',
           'name': 'Decisions, Decisions',
           'image': 'images/levels/decisions.png',
-          'start': [0, 280]
+          'start': [0, 280],
+          'end': [[null, 102], [null, 438]]
         },
         {
           'id': 'curveball',
           'name': 'Oh you can do that?',
           'image': 'images/levels/curveball.png',
-          'start': [0, 550]
+          'start': [0, 550],
+          'end': [null, 517]
         },
         {
           'id': 'waitwhat',
           'name': 'Wait, What?',
           'image': 'images/levels/what.png',
-          'start': [0, 305]
+          'start': [0, 305],
+          'end': [null, 55]
         }
       ];
 

@@ -77,7 +77,7 @@ var Levels = (function() {
     if (typeof level === 'object') {
       level = level.id;
     }
-    return elLevel = el.querySelector('li[data-level = "' + level + '"]');
+    return el.querySelector('li[data-level = "' + level + '"]');
   }
 
   function onLevelClick(e) {

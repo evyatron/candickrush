@@ -1,5 +1,6 @@
 var User = (function() {
-  var id,
+  var el,
+      id,
       name,
       country,
       countryCode,

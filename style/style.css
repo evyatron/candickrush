@@ -203,7 +203,7 @@ h1 {
 }
 .game-lose #game canvas {
   -webkit-transition: opacity 1500ms ease-out;
-  transition-duration: opacity 1500ms ease-out;
+  transition: opacity 1500ms ease-out;
   opacity: 0;
 }
 .game-win #game {
@@ -293,6 +293,76 @@ h1 {
     }
   }
 
+  .end-points {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 70;
+  }
+    .end-points > div {
+      position: absolute;
+      width: 27px;
+      height: 54px;
+      margin: -27px 0 0 -27px;
+      background: transparent url(../images/end.png) 5px 50% no-repeat;
+      background-size: auto 100%;
+      -webkit-animation: end-pick 5000ms infinite ease-in-out;
+      animation: end-pick 5000ms infinite ease-in-out;
+    }
+    @-webkit-keyframes end-pick {
+      0% {
+        background-position: 5px 50%;
+      }
+      5% {
+        background-position: 0px 50%;
+      }
+      10% {
+        background-position: 5px 50%;
+      }
+      15% {
+        background-position: 5px 50%;
+      }
+      20% {
+        background-position: 2px 50%;
+      }
+      25% {
+        background-position: 5px 50%;
+      }
+      100% {
+        background-position: 5px 50%;
+      }
+    }
+    @keyframes end-pick {
+      0% {
+        background-position: 5px 50%;
+      }
+      5% {
+        background-position: 0px 50%;
+      }
+      10% {
+        background-position: 5px 50%;
+      }
+      15% {
+        background-position: 5px 50%;
+      }
+      20% {
+        background-position: 2px 50%;
+      }
+      25% {
+        background-position: 5px 50%;
+      }
+      100% {
+        background-position: 5px 50%;
+      }
+    }
+
+
+.game-win .end-points,
+.game-lose .end-points {
+  -webkit-transition: opacity 1500ms ease-out;
+  transition: opacity 1500ms ease-out;
+  opacity: 0;
+}
   #dick {
     position: absolute;
     top: 0;

@@ -3,6 +3,7 @@ var Game = (function() {
       elPlayer,
       elClock,
       elStart,
+      elEndPoints,
 
       playerX = 0,
       playerY = 0,
@@ -42,7 +43,8 @@ var Game = (function() {
     elPlayer = options.elPlayer;
     elClock = options.elClock;
 
-    elStart = el.querySelector('.start')
+    elStart = el.querySelector('.start');
+    elEndPoints = el.querySelector('.end-points');
 
     onStart = options.onStart || function(){};
     onClose = options.onClose || function(){};
@@ -95,6 +97,8 @@ var Game = (function() {
     playerX = currentLevel.start[0];
     playerY = currentLevel.start[1];
 
+    drawFinishPoints();
+
     update();
 
     window.addEventListener('mousemove', onMouseMove);
@@ -104,6 +108,37 @@ var Game = (function() {
 
     elStart.style.top = playerY + 'px';
     elStart.addEventListener('mouseover', mouseOnStart);
+  }
+
+  function drawFinishPoints() {
+    var endPoints = currentLevel.end || [];
+    
+    if (!Array.isArray(endPoints[0])) {
+      endPoints = [endPoints];
+    }
+
+    for (var i = 0, point; point = endPoints[i++];) {
+      var x = point[0],
+          y = point[1],
+          elPoint = document.createElement('div');
+
+      if (typeof x !== 'number') {
+        x = width;
+      }
+      if (typeof y !== 'number') {
+        y = height/2;
+      }
+
+      elPoint.className = 'end-point';
+      elPoint.style.cssText += 'top: ' + y + 'px;' +
+                               'left: ' + x + 'px;';
+
+      elEndPoints.appendChild(elPoint);
+    }
+  }
+
+  function removeFinishPoints() {
+    elEndPoints.innerHTML = '';
   }
 
   function mouseOnStart() {
@@ -122,6 +157,8 @@ var Game = (function() {
     stop();
     window.removeEventListener('keyup', onKeyUp);
     el.querySelector('.close').removeEventListener('click', close);
+
+    removeFinishPoints();
 
     document.body.classList.remove(CLASSES.ACTIVE);
     document.body.classList.remove(CLASSES.GAME_WON);
@@ -265,18 +302,18 @@ var Game = (function() {
 
     previousX = playerX;
 
-    update();
-  }
-
-  function update() {
-    playerX = Math.round(Math.min(Math.max(playerX, playerWidth/2), el.offsetWidth - playerWidth/2));
-    playerY = Math.round(Math.min(Math.max(playerY, playerHeight/2), el.offsetHeight - playerHeight/2));
-
     var didCollide = checkCollision();
 
     if (didCollide) {
       return;
+    } else {
+      update();
     }
+  }
+
+  function update() {
+    playerX = Math.min(Math.max(playerX, playerWidth/2), width - playerWidth/2);
+    playerY = Math.min(Math.max(playerY, playerHeight/2), height - playerHeight/2);
 
     var transform = 'translate(' + playerX + 'px, ' + playerY + 'px)';
     
