@@ -32,6 +32,10 @@ var DB = (function() {
     return firebase.child(path).remove(callback);
   }
 
+  function ref(path) {
+    return firebase.child(path);
+  }
+
   var User = {
     'login': function login(callback) {
       !callback && (callback = function(){});
@@ -77,8 +81,8 @@ var DB = (function() {
     },
 
     'update': function update(user) {
-      var refUser = firebase.child('users').child(user.id);
-      refUser.update(user);
+      firebase.child('users').child(user.id).update(user);
+      firebase.child('online').child(user.id).update(user);
     }
   };
 
@@ -88,6 +92,7 @@ var DB = (function() {
     'get': get,
     'set': set,
     'remove': remove,
+    'ref': ref,
     'User': User
   };
 }());

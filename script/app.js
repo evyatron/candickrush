@@ -23,6 +23,10 @@ var App = (function() {
 
     DB.init();
 
+    Users.init({
+      'el': document.getElementById('players')
+    });
+
     User.init({
       'el': document.getElementById('player'),
       'onReady': onPlayerReady,
