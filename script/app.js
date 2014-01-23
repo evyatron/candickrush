@@ -23,9 +23,13 @@ var App = (function() {
 
     User.init({
       'firebase': firebase,
-      'el': document.getElementById('player')
+      'el': document.getElementById('player'),
+      'onReady': onPlayerReady,
+      'onLevelCompleted': onLevelCompleted
     });
+  }
 
+  function onPlayerReady() {
     Game.init({
       'firebase': firebase,
       'el': document.getElementById('game'),
@@ -40,6 +44,7 @@ var App = (function() {
     Levels.init({
       'el': document.getElementById('levels'),
       'levels': LEVELS,
+      'status': User.getLevelStatus(),
       'onSelect': onLevelSelect
     });
 
@@ -78,6 +83,11 @@ var App = (function() {
   
   function onGameWin(data) {
     User.stopPlaying(data, true);
+  }
+
+  function onLevelCompleted(level, data) {
+    console.log('onLevelCompleted', level, data)
+    Levels.addLevelStatus(level, data);
   }
 
   return {
