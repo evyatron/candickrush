@@ -59,8 +59,8 @@ var Levels = (function() {
   function onPlayingChange(snapshot) {
     var levelsPlaying = (snapshot && snapshot.val()) || {};
 
-    for (var i = 0, level; level = levels[i++];) {
-      setPlaying(i, levelsPlaying[i]);
+    for (var id in levels) {
+      setPlaying(id, levelsPlaying[id]);
     }
   }
 
