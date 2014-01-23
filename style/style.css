@@ -21,7 +21,8 @@ a:hover {
   bottom: 0;
   background: #eaeef4;
   background: linear-gradient(to bottom, #eaeef4, #cccccc);
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 #loading {
@@ -107,6 +108,11 @@ h1 {
 #container > p {
   margin-top: 10px;
   text-align: center;
+  -webkit-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+}
+.game-ready #container > p {
+  opacity: .3;
 }
   p strong {
     position: relative;
@@ -404,12 +410,12 @@ h1 {
   }
 
 #levels {
-  -webkit-transition: all 150ms ease-in-out;
-  transition: all 150ms ease-in-out;
   list-style-type: none;
   text-align: center;
   width: 660px;
   margin: 50px auto;
+  -webkit-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
 }
 .game-ready #levels {
   opacity: .3;
@@ -454,10 +460,9 @@ h1 {
   }
   .ready #levels:after {
     content: "More levels to come!";
-    display: block;
-    margin: 10px auto;
     line-height: 200px;
     cursor: default;
+    vertical-align: top;
   }
     #levels > li:hover:before {
       opacity: 1;
@@ -544,7 +549,7 @@ h1 {
 
 
 #info-trigger {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 0;
   margin: 5px;
