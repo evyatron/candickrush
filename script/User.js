@@ -5,38 +5,61 @@ var User = (function() {
       countryCode,
       firebaseRef,
       firebasePlaying,
+      auth,
 
       firebase = null,
-      DEFAULT_NAME = 'Dick',
-      KEY_USER_ID = 'dickUserId';
+      DEFAULT_NAME = 'Dick';
 
   function init(options) {
     firebase = options.firebase;
     el = options.el;
-    id = Storage.get(KEY_USER_ID);
 
-    if (id) {
-      firebaseRef = firebase.child('users').child(id);
-      firebaseRef.once('value', function(data) {
-        data = data && data.val();
-        if (data) {
-          name = data.name || DEFAULT_NAME;
-          country = data.country;
-          countryCode = data.countryCode;
+    auth = new FirebaseSimpleLogin(firebase, onAuth);
+  }
 
-          firebaseRef.update({
-            'online': true,
-            'playing': null
-          });
-
-          onUserReady();
-        } else {
-          newUser();
-        }
-      });
+  function onAuth(error, user) {
+    if (user) {
+      validate(user);
     } else {
-      newUser();
+      auth.login('anonymous', {
+        'rememberMe': true
+      });
     }
+  }
+
+  function validate(user) {
+    id = user && user.id;
+
+    if (!id) {
+      onAuth();
+      return;
+    }
+
+    firebaseRef = firebase.child('users').child(id);
+
+    firebaseRef.once('value', function(data) {
+      data = data && data.val() || {};
+
+      name = data.name || DEFAULT_NAME;
+      country = data.country;
+      countryCode = data.countryCode;
+
+      firebaseRef.update({
+        'name': name,
+        'online': true,
+        'playing': null
+      });
+
+      var refOnline = firebase.child('online').child(id);
+      refOnline.set(getInfo());
+      refOnline.onDisconnect().remove();
+
+      if (!country || !countryCode) {
+        getLocation();
+      }
+
+      onUserReady();
+    });
   }
 
   function onUserReady() {
@@ -61,15 +84,11 @@ var User = (function() {
 
     var info = {
       'start': (new Date()).toString(),
-      'user': {
-        'id': id,
-        'name': name,
-        'country': country,
-        'countryCode': countryCode
-      }
+      'user': getInfo()
     };
 
-    firebasePlaying = firebase.child('playing').child(levelNumber).push(info);
+    // build the data as playing/LEVEL/PLAYER/{info}
+    firebasePlaying = firebase.child('playing').child(levelNumber).child(id).push(info);
     firebasePlaying.onDisconnect().remove();
   }
 
@@ -103,17 +122,13 @@ var User = (function() {
     });
   }
 
-  function newUser() {
-    firebaseRef = firebase.child('users').push({
-      'name': DEFAULT_NAME,
-      'online': true
-    }, function onUserCreated(data) {
-      id = firebaseRef.name();
-      name = DEFAULT_NAME;
-      Storage.set(KEY_USER_ID, id);
-      getLocation();
-      onUserReady();
-    });
+  function getInfo() {
+    return {
+      'id': id,
+      'name': name,
+      'country': country,
+      'countryCode': countryCode
+    };
   }
 
   function getLocation() {
@@ -160,6 +175,7 @@ var User = (function() {
 
   return {
     'init': init,
+    'getInfo': getInfo,
     'startPlaying': startPlaying,
     'stopPlaying': stopPlaying
   };
