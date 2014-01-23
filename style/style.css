@@ -58,11 +58,13 @@ a:hover {
     margin: 5px;
     border-left: 10px solid rgba(0, 0, 0, .6);
     -webkit-animation: spin-cw 800ms ease-in-out alternate infinite;
+    animation: spin-cw 800ms ease-in-out alternate infinite;
   }
   #loading:after {
     margin: 10px;
     border-right: 10px solid rgba(0, 0, 0, .6);
     -webkit-animation: spin-cw 700ms ease-in-out alternate infinite;
+    animation: spin-cw 700ms ease-in-out alternate infinite;
   }
   @-webkit-keyframes spin-cw {
     0% {
@@ -70,6 +72,14 @@ a:hover {
     }
     100% {
       -webkit-transform: rotate(360deg);
+    }
+  }
+  @keyframes spin-cw {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 
@@ -404,7 +414,8 @@ h1 {
   opacity: .3;
   pointer-events: none;
 }
-  #levels > li {
+  #levels > li,
+  #levels:after {
     position: relative;
     display: inline-block;
     width: 200px;
@@ -438,6 +449,13 @@ h1 {
     background-color: #aaa;
     -webkit-transform: translateY(-15px) scale(1.05);
     transform: translateY(-15px) scale(1.05);
+  }
+  .ready #levels:after {
+    content: "More levels to come!";
+    display: block;
+    margin: 10px auto;
+    line-height: 200px;
+    cursor: default;
   }
     #levels > li:hover:before {
       opacity: 1;
