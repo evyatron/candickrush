@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Can Dick Rush?</title>
+
+    <meta name="author" content="Evyatar Amitay" />
+
+    <link href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600" rel="stylesheet" type="text/css" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1" />
+
+    <link href="style/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="container">
+      <h1>Can Dick Rush?</h1>
+      <p>Can <strong>Dick</strong> Rush through these complicatedly elborate mazes? Yes he can - with your help!</p>
+
+      <ul id="levels"></ul>
+
+      <div id="game">
+        <strong id="dick">
+          <b class="top"></b>
+          <b class="bottom"></b>
+          <b class="left"></b>
+          <b class="right"></b>
+        </strong>
+        <span id="clock"></span>
+        <h2 class="level-name"></h2>
+        <b class="close"></b>
+        <b class="start"></b>
+      </div>
+
+      <div id="player">
+        <h2 class="name"></h2>
+        <div class="country"></div>
+      </div>
+
+      <div id="info">
+        <h2>Can Dick Rush?</h2>
+        <p>This game was inspired by a certain trademark registered by a certain company.</p>
+        <h2>What do I do?</h2>
+        <p>Help 'Dick' navigate through the levels using only your mouse, without hitting the walls.</p>
+        <h2>Thanks to:</h2>
+        <ul>
+          <li><a href="http://4-designer.com/2013/03/lovely-desserts-and-candy-Computer-icon-png/" rel="external" target="_blank">4-designer</a> for Dick</li>
+          <li><a href="http://ip-api.com/" rel="external" target="_blank">IP-API.com</a> for location services</li>
+          <li><a href="http://firebase.com/" rel="external" target="_blank">Firebase</a> for all Backend services</li>
+          <li><a href="http://www.iconfinder.com/icons/27881/arrow_up_icon" rel="external" target="_blank">Visual Pharm</a> for Start icon</li>
+          <li><a href="http://www.geonames.org/" rel="external" target="_blank">GeoNames</a> for the country flags</li>
+          <li><a href="http://github.com/evyatron/candickrush/" rel="external" target="_blank">GitHub</a> for being GitHub</li>
+        </ul>
+      </div>
+    </div>
+
+    <script src="https://cdn.firebase.com/v0/firebase.js"></script>
+    <script src="script/Levels.js"></script>
+    <script src="script/User.js"></script>
+    <script src="script/Game.js"></script>
+    <script src="script/app.js"></script>
+    <script>
+      App.init();
+    </script>
+  </body>
+</html>
