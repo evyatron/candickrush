@@ -4,76 +4,38 @@ var User = (function() {
       country,
       countryCode,
       levels,
-      firebaseRef,
-      firebasePlaying,
-      auth,
       onReady,
       onLevelCompleted,
 
-      firebase = null,
+      refPlaying,
+
       DEFAULT_NAME = 'Guest';
 
   function init(options) {
-    firebase = options.firebase;
     el = options.el;
     onReady = options.onReady || function(){};
     onLevelCompleted = options.onLevelCompleted || function(){};
 
-    auth = new FirebaseSimpleLogin(firebase, onAuth);
+    DB.User.login(onLogin);
   }
 
-  function onAuth(error, user) {
-    if (user) {
-      validate(user);
-    } else {
-      auth.login('anonymous', {
-        'rememberMe': true
-      });
-    }
-  }
+  function onLogin(user) {
+    id = user.id;
+    name = user.name || DEFAULT_NAME;
+    country = user.country;
+    countryCode = user.countryCode;
+    levels = user.levels || {};
 
-  function validate(user) {
-    id = user && user.id;
+    DB.User.online(getInfo());
 
-    if (!id) {
-      onAuth();
-      return;
+    if (!country || !countryCode) {
+      getLocation();
     }
 
-    firebaseRef = firebase.child('users').child(id);
-
-    firebaseRef.once('value', function(data) {
-      data = data && data.val() || {};
-
-      name = data.name || DEFAULT_NAME;
-      country = data.country;
-      countryCode = data.countryCode;
-      levels = data.levels || {};
-
-      firebaseRef.update({
-        'name': name,
-        'online': true,
-        'playing': null
-      });
-
-      var refOnline = firebase.child('online').child(id);
-      refOnline.set(getInfo());
-      refOnline.onDisconnect().remove();
-
-      if (!country || !countryCode) {
-        getLocation();
-      }
-
-      onUserReady();
-    });
+    onUserReady();
   }
 
   function onUserReady() {
-    firebaseRef.onDisconnect().update({
-      'online': false,
-      'playing': null
-    });
-
     updateUI();
 
     el.querySelector('.name').addEventListener('click', uiChangeName);
@@ -86,24 +48,22 @@ var User = (function() {
   function startPlaying(level) {
     var levelNumber = level.level;
 
-    firebaseRef.update({
+    DB.User.update({
+      'id': id,
       'playing': levelNumber
     });
 
-    var info = {
+    refPlaying = DB.set('playing/' + levelNumber + '/' + id, {
       'start': (new Date()).toString(),
-      'user': getInfo()
-    };
-
-    // build the data as playing/LEVEL/PLAYER/{info}
-    firebasePlaying = firebase.child('playing').child(levelNumber).child(id).push(info);
-    firebasePlaying.onDisconnect().remove();
+      'user': getInfo(),
+      'removeOnDisconnect': true
+    });
   }
 
   function stopPlaying(info, didWin) {
-    firebasePlaying && firebasePlaying.remove();
+    refPlaying && refPlaying.remove();
 
-    firebaseRef.child('playing').remove();
+    DB.remove('users/' + id + '/playing');
 
     if (!info) {
       return;
@@ -113,39 +73,38 @@ var User = (function() {
 
     info.didWin = !!didWin;
 
-
     // add a "map" of levels' statuses, for UI
-    var levelRef = firebaseRef.child('levels').child(levelNumber);
-    levelRef.once('value', function(data) {
+    DB.get('users/' + id + '/levels/' + levelNumber, function(data) {
       data = data && data.val();
+
       if (
           !data ||
           !data.didWin || 
           (info.didWin && data.didWin && data.duration > info.duration)
         ) {
+
         data = {
           'didWin': info.didWin,
           'duration': info.duration
         };
 
-        levelRef.set(data);
+        DB.set('users/' + id + '/levels/' + levelNumber, data);
 
         onLevelCompleted(levelNumber, data);
       }
-    });
+    })
 
     // add game to global games, add user's info
     info.user = id;
 
-    var gameRef = firebase.child('games').push(info, function() {
-      var newGameId = gameRef.name();
+    var ref = DB.push('games', info, function() {
+      var gameId = ref.name();
 
       // add game to user's games
-      firebaseRef.child('games').child(newGameId).set(info);
-
-      firebase.child('games-by-user').child(id).child(newGameId).set(true);
-      firebase.child('games-by-level').child(levelNumber).child(newGameId).set(true);
-    });
+      DB.set('games/' + gameId, info);
+      DB.set('games-by-user/' + id + '/' + gameId, true);
+      DB.set('games-by-level/' + levelNumber + '/' + gameId, true);
+    })
   }
 
   function getInfo() {
@@ -165,15 +124,9 @@ var User = (function() {
     json({
       'url': 'http://ip-api.com/json/',
       'callback': function onLocationGot(data) {
-        country = data.country;
-        countryCode = data.countryCode;
-
-        firebaseRef.update({
-          'country': country || '',
-          'countryCode': countryCode || ''
-        });
-
-        updateUI();
+        if (data) {
+          setCountry(data.country, data.countryCode);
+        }
       }
     });
   }
@@ -184,12 +137,22 @@ var User = (function() {
       return;
     }
 
-    name = newName;
+    setName(newName);
+  }
 
-    firebaseRef.update({
-      'name': name
-    });
+  function setCountry(newCountry, newCountryCode) {
+    country = newCountry || '';
+    countryCode = newCountryCode || '';
+    update();
+  }
 
+  function setName(newName) {
+    name = newName || DEFAULT_NAME;
+    update();
+  }
+
+  function update() {
+    DB.User.update(getInfo());
     updateUI();
   }
 
@@ -207,6 +170,8 @@ var User = (function() {
     'init': init,
     'getInfo': getInfo,
     'getLevelStatus': getLevelStatus,
+    'setCountry': setCountry,
+    'setName': setName,
     'startPlaying': startPlaying,
     'stopPlaying': stopPlaying
   };

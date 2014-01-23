@@ -24,7 +24,6 @@ var Game = (function() {
       currentLevel,
       currentEdges = [],
 
-      firebase = null,
       FLIP_THRESHOLD = 1,
       EDGE_THRESHOLD = 6,
 
@@ -39,7 +38,6 @@ var Game = (function() {
 
 
   function init(options) {
-    firebase = options.firebase;
     el = options.el;
     elPlayer = options.elPlayer;
     elClock = options.elClock;

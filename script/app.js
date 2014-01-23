@@ -1,6 +1,5 @@
 var App = (function() {
-  var firebase,
-      LEVELS = [
+  var LEVELS = [
         {
           'name': 'Beginners',
           'image': 'images/levels/1.png',
@@ -19,13 +18,12 @@ var App = (function() {
       ];
 
   function init() {
-    firebase = new Firebase('https://candickrun.firebaseio.com');
-
     document.getElementById('info-trigger').addEventListener('click', toggleInfo);
     document.getElementById('info-close').addEventListener('click', toggleInfo);
 
+    DB.init();
+
     User.init({
-      'firebase': firebase,
       'el': document.getElementById('player'),
       'onReady': onPlayerReady,
       'onLevelCompleted': onLevelCompleted
@@ -34,7 +32,6 @@ var App = (function() {
 
   function onPlayerReady() {
     Game.init({
-      'firebase': firebase,
       'el': document.getElementById('game'),
       'elPlayer': document.getElementById('dick'),
       'elClock': document.getElementById('clock'),
@@ -90,7 +87,6 @@ var App = (function() {
   }
 
   function onLevelCompleted(level, data) {
-    console.log('onLevelCompleted', level, data)
     Levels.addLevelStatus(level, data);
   }
 
