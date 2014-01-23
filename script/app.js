@@ -42,6 +42,22 @@ var App = (function() {
       'levels': LEVELS,
       'onSelect': onLevelSelect
     });
+
+    document.getElementById('info-trigger').addEventListener('click', toggleInfo);
+    window.addEventListener('keyup', onKeyUp);
+  }
+
+  function toggleInfo() {
+    document.body.classList.toggle('info');
+  }
+
+  function onKeyUp(e) {
+    // esc
+    if (e.keyCode === 27) {
+      if (document.body.classList.contains('info')) {
+        document.body.classList.remove('info')
+      }
+    }
   }
 
   function onLevelSelect(level) {

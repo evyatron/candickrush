@@ -420,26 +420,80 @@ h1 {
   }
 
 
-  #info {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    padding: 20px;
-    font-size: 16px;
-    text-align: left;
-    background: #fff;
-    box-shadow: 0 0 0 5px rgba(0, 0, 0, .5);
-    border-radius: 8px;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+#info-trigger {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 5px;
+  font-size: 47px;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, .3);
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, .3) inset;
+  cursor: pointer;
+  z-index: 700;
+  -webkit-transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
+}
+#info-trigger:hover{
+  box-shadow: 0 0 0 8px rgba(0, 0, 0, .3) inset;
+  background: rgba(0, 0, 0, .25);
+}
+#info-screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .6);
+  z-index: 600;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transition: all 260ms ease-in-out;
+  transition: all 260ms ease-in-out;
+}
+#info {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 500px;
+  height: 340px;
+  padding: 20px;
+  margin: -190px 0 0 -270px;
+  font-size: 16px;
+  text-align: left;
+  background: #fff;
+  box-shadow: 0 0 0 5px rgba(0, 0, 0, .5);
+  border-radius: 8px;
+  z-index: 800;
+  opacity: 0;
+  pointer-events: none;
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+  -webkit-transition: all 220ms ease-in-out;
+  transition: all 220ms ease-in-out;
+}
+  #info h2 {
+    font-weight: 400;
+    font-size: 19px;
   }
-    #info h2 {
-      font-weight: 400;
-      font-size: 19px;
-    }
-    #info p {
-      margin: 0 0 10px 0;
-    }
-    #info ul {
-      margin-left: 20px;
-    }
+  #info p {
+    margin: 0 0 10px 0;
+  }
+  #info ul {
+    margin-left: 20px;
+  }
+
+.info #info {
+  opacity: 1;
+  pointer-events: inherit;
+  -webkit-transform: scale(1);
+  transform: scale(1);
+}
+.info #info-screen {
+  opacity: 1;
+  pointer-events: inherit;
+}
