@@ -8,8 +8,6 @@ var Levels = (function() {
     onLevelSelect = options.onSelect || function(){};
 
     add(options.levels, options.status);
-
-    DB.ref('playing/').on('value', onPlayingChange);
   }
 
   function add(levels, status) {
@@ -27,13 +25,10 @@ var Levels = (function() {
 
     var elLevel = document.createElement('li');
 
-    elLevel.className = 'playing-0';
-
     elLevel.dataset.level = level.id;
     elLevel.innerHTML = '<h3>' + level.name + '</h3>' +
                         '<span class="image" style="background-image: url(' + level.image + ');"></span>' +
-                        '<div class="status">Record: <span class="record"></span></div>' +
-                        '<div class="playing">Playing: <span class="playing-num">0</span></div>';
+                        '<div class="status">Record: <span class="record"></span></div>';
 
     elLevel.addEventListener('click', onLevelClick);
 
@@ -56,23 +51,6 @@ var Levels = (function() {
     }
   }
 
-  function onPlayingChange(snapshot) {
-    var levelsPlaying = (snapshot && snapshot.val()) || {};
-
-    for (var id in levels) {
-      setPlaying(id, levelsPlaying[id]);
-    }
-  }
-
-  function setPlaying(level, players) {
-    var elLevel = getLevelElement(level),
-        numberOfPlayers = Object.keys(players || {}).length;
-
-    elLevel.className = elLevel.className.replace(/playing-\d+/, '');
-    elLevel.classList.add('playing-' + numberOfPlayers);
-    (elLevel.querySelector('.playing-num') || {}).innerHTML = numberOfPlayers;
-  }
-
   function getLevelElement(level) {
     if (typeof level === 'object') {
       level = level.id;
@@ -90,6 +68,7 @@ var Levels = (function() {
   return {
     'init': init,
     'add': add,
-    'addLevelStatus': addLevelStatus
+    'addLevelStatus': addLevelStatus,
+    'getLevelElement': getLevelElement
   };
 }());

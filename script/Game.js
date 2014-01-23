@@ -59,6 +59,16 @@ var Game = (function() {
     elCanvas.height = height = el.offsetHeight;
     context = elCanvas.getContext('2d');
     el.appendChild(elCanvas);
+
+    el.querySelector('#level-retry').addEventListener('click', restart);
+    el.querySelector('#level-repeat').addEventListener('click', restart);
+  }
+
+  function restart() {
+    document.body.classList.remove(CLASSES.GAME_WON);
+    document.body.classList.remove(CLASSES.GAME_LOST);
+
+    load(currentLevel);
   }
 
   function start() {
@@ -76,6 +86,9 @@ var Game = (function() {
   }
 
   function load(level) {
+    document.body.classList.remove(CLASSES.GAME_WON);
+    document.body.classList.remove(CLASSES.GAME_LOST);
+
     elClock.innerHTML = '0:00';
     currentLevel = level;
 
@@ -92,8 +105,6 @@ var Game = (function() {
   }
 
   function onLoad() {
-    document.body.classList.remove(CLASSES.GAME_LOST);
-
     playerX = currentLevel.start[0];
     playerY = currentLevel.start[1];
 
@@ -116,6 +127,8 @@ var Game = (function() {
     if (!Array.isArray(endPoints[0])) {
       endPoints = [endPoints];
     }
+
+    elEndPoints.innerHTML = '';
 
     for (var i = 0, point; point = endPoints[i++];) {
       var x = point[0],
