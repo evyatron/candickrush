@@ -284,7 +284,6 @@ h1 {
     height: 36px;
     width: 42px;
     margin-top: -18px;
-    background: rgba(255,0,0,.2);
     pointer-events: auto;
   }
   .game-running #game .start,
