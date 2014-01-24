@@ -16,11 +16,17 @@ var DB = (function() {
     var ref = firebase.child(path);
     ref.set(data, callback);
 
+    if (data.removeOnDisconnect) {
+      ref.onDisconnect().remove();
+    }
+
     return ref;
   }
 
   function push(path, data, callback) {
-    var ref = firebase.child(path).push(data, callback);
+    var ref = firebase.child(path);
+    ref.push(data, callback);
+
     if (data.removeOnDisconnect) {
       ref.onDisconnect().remove();
     }
@@ -78,6 +84,14 @@ var DB = (function() {
       var refOnline = firebase.child('online').child(user.id);
       refOnline.set(user);
       refOnline.onDisconnect().remove();
+
+      window.addEventListener('beforeunload', function onBeforeUnload() {
+        refOnline.remove();
+        refUser.update({
+          'online': false,
+          'playing': null
+        });
+      });
     },
 
     'update': function update(user) {
